@@ -36,50 +36,50 @@
      *  only be called once.)
      */
      function draw() {
-    graphics.clearRect(0, 0, 600, 600);  // Очистить холст
+    graphics.clearRect(0, 0, 600, 600);  
 
-    // Нарисовать голубой прямоугольник
-    graphics.fillStyle = "#0ABAB5";  // Цвет Тиффани
-    graphics.fillRect(100, 100, 400, 200);  // Прямоугольник с цветом Тиффани
+   
+    graphics.fillStyle = "#0ABAB5"; 
+    graphics.fillRect(100, 100, 400, 200); 
 
-    // Нарисовать глаза
-    graphics.fillStyle = "white";  // Белый цвет для глаз
+  
+    graphics.fillStyle = "white";  
     graphics.beginPath();
-    graphics.arc(200, 150, 30, 0, 2 * Math.PI);  // Левый глаз
-    graphics.arc(400, 150, 30, 0, 2 * Math.PI);  // Правый глаз
-    graphics.fill();  // Заполнить глаза белым
+    graphics.arc(200, 150, 30, 0, 2 * Math.PI); 
+    graphics.arc(400, 150, 30, 0, 2 * Math.PI); 
+    graphics.fill();  
 
-    // Нарисовать радужки
-    graphics.fillStyle = "black";  // Синий цвет для радужек
+ 
+    graphics.fillStyle = "black"; 
     graphics.beginPath();
-    graphics.arc(200, 150, 20, 0, 2 * Math.PI);  // Левый глаз
-    graphics.arc(400, 150, 20, 0, 2 * Math.PI);  // Правый глаз
-    graphics.fill();  // Заполнить радужки синим
+    graphics.arc(200, 150, 20, 0, 2 * Math.PI);  
+    graphics.arc(400, 150, 20, 0, 2 * Math.PI);  
+    graphics.fill();  
 
-    // Добавить блики в глаза (белые круги)
-    graphics.fillStyle = "white";  // Белый цвет для бликов
+    
+    graphics.fillStyle = "white";  
     graphics.beginPath();
-    graphics.arc(190, 140, 5, 0, 2 * Math.PI);  // Блик в левом глазу
-    graphics.arc(390, 140, 5, 0, 2 * Math.PI);  // Блик в правом глазу
-    graphics.fill();  // Заполнить блики белым
+    graphics.arc(190, 140, 5, 0, 2 * Math.PI);  
+    graphics.arc(390, 140, 5, 0, 2 * Math.PI); 
+    graphics.fill();  
 
-    graphics.fillStyle = "black";  // Черный цвет для улыбки
+    graphics.fillStyle = "black"; 
     graphics.beginPath();
-    graphics.arc(300, 190, 80, 0, Math.PI, false);  // Перевернутая улыбка (полумесяц вниз)
-    graphics.lineTo(220, 190);  // Соединить с центром для закрытия
-    graphics.lineTo(380, 190);  // Завершаем контур
-    graphics.fill();  // Заполнить улыбку черным цветом
+    graphics.arc(300, 190, 80, 0, Math.PI, false); 
+    graphics.lineTo(220, 190); 
+    graphics.lineTo(380, 190);  
+    graphics.fill(); 
 
-    // Нарисовать два коротких зуба в улыбке (белые)
-    graphics.fillStyle = "white";  // Белый цвет для зубов
-    graphics.fillRect(280, 190, 15, 30);  // Левый зуб
-    graphics.fillRect(300, 190, 15, 30);  // Правый зуб
 
-    graphics.lineWidth = 3;  // Тонкая линия для полумесяцев
+    graphics.fillStyle = "white"; 
+    graphics.fillRect(280, 190, 15, 30);  
+    graphics.fillRect(300, 190, 15, 30);  
+
+    graphics.lineWidth = 3;
     graphics.beginPath();
-    graphics.arc(212, 190, 10, Math.PI, 2 * Math.PI, false);  // Маленький полумесяц в левом углу
-    graphics.arc(389, 190, 10, Math.PI, 2 * Math.PI, false);  // Маленький полумесяц в правом углу
-    graphics.stroke();  // Нарисовать полумесяцы
+    graphics.arc(212, 190, 10, Math.PI, 2 * Math.PI, false);  
+    graphics.arc(389, 190, 10, Math.PI, 2 * Math.PI, false); 
+    graphics.stroke();  
      }
 
 // end of draw()
