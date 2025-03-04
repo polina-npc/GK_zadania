@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CS424, Lab 2, Exercise 2</title>
+<style>
+    body {
+        background-color: #DDDDDD;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+    canvas {
+        background-color: white;
+        display: block;
+    }
+    #canvasholder {
+        border:2px solid black;
+        float: left;
+    }
+</style>
+<script>
+    "use strict";
+
+    var canvas, graphics;
+    var drawingMode = "squares";
+
+    function randomColorString() {
+        var r = Math.floor(256*Math.random());
+        var g = Math.floor(256*Math.random());
+        var b = Math.floor(256*Math.random());
+        return "rgb(" + r + "," + g + "," + b + ")";
+    }
+
+    function installMouseHandler() {
+        var dragging = false;
+        var prevX, prevY;
+        var colorChoice;
+
+        function doMouseDown(evt) {
+            if (dragging || evt.button !== 0) return;
+            var r = canvas.getBoundingClientRect();
+            var x = Math.round(evt.clientX - r.left);
+            var y = Math.round(evt.clientY - r.top);
+            dragging = true;
+            prevX = x;
+            prevY = y;
+            document.addEventListener("mousemove", doMouseMove, false);
+            document.addEventListener("mouseup", doMouseUp, false);
+            colorChoice = Number(document.getElementById("colorChoice").value);
+        }
+
+        function doMouseMove(evt) {
+            if (!dragging) return;
+            var r = canvas.getBoundingClientRect();
+            var x = Math.round(evt.clientX - r.left);
+            var y = Math.round(evt.clientY - r.top);
+
+            if (Math.abs(x - prevX) + Math.abs(y - prevY) < 3) return;
+
+            if (colorChoice === 0) graphics.fillStyle = randomColorString();
+            else if (colorChoice === 1) graphics.fillStyle = "red";
+            else if (colorChoice === 2) graphics.fillStyle = "green";
+            else if (colorChoice === 3) graphics.fillStyle = "blue";
+            else if (colorChoice === 4) graphics.fillStyle = "purple";
+
+            if (drawingMode === "squares") {
+                graphics.fillRect(x - 20, y - 20, 40, 40);
+                graphics.strokeRect(x - 20, y - 20, 40, 40);
+            } else if (drawingMode === "polygons") {
+                drawRectangle(x, y, 60, 40);
+            }
+
+            prevX = x;
+            prevY = y;
+        }
+
+        function doMouseUp(evt) {
+            if (!dragging) return;
+            dragging = false;
+            document.removeEventListener("mousemove", doMouseMove, false);
+            document.removeEventListener("mouseup", doMouseUp, false);
+        }
+
+        canvas.addEventListener("mousedown", doMouseDown, false);
+    }
+
+    function drawRectangle(x, y, width, height) {
+        graphics.beginPath();
+        graphics.rect(x - width / 2, y - height / 2, width, height);
+        graphics.closePath();
+        graphics.fill();
+        graphics.stroke();
+    }
+
+    function clearCanvas() {
+        graphics.fillStyle = "white";
+        graphics.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function changeDrawingMode() {
+        drawingMode = document.getElementById("drawMode").value;
+    }
+
+    function init() {
+        try {
+            canvas = document.getElementById("canvas");
+            graphics = canvas.getContext("2d");
+        } catch (e) {
+            document.getElementById("canvasholder").innerHTML =
+                "<p>Canvas graphics is not supported.<br>An error occurred while initializing graphics.</p>";
+            return;
+        }
+        installMouseHandler();
+        clearCanvas();
+    }
+</script>
+</head>
+<body onload="init()">
+
+<h2>Lab 2, Exercise 2: Mousing</h2>
+
+<p><b>Color:</b>
+    <select id="colorChoice">
+        <option value="0" selected="selected">Random</option>
+        <option value="1">Red</option>
+        <option value="2">Green</option>
+        <option value="3">Blue</option>
+        <option value="4">Purple</option>
+    </select>
+</p>
+
+<p><b>Drawing Mode:</b>
+    <select id="drawMode" onchange="changeDrawingMode()">
+        <option value="squares" selected="selected">Squares</option>
+        <option value="polygons">Rectangles</option>
+    </select>
+</p>
+
+<button onclick="clearCanvas()">Clear</button>
+
+<div id="canvasholder">
+    <canvas id="canvas" width="800" height="600"></canvas>
+</div>
+
+</body>
+</html>
