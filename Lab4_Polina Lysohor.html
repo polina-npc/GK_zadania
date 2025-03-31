@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Animated Seesaws</title>
+<style>
+    canvas 
+    {
+        background: white;
+        display: block;
+        margin: auto;
+    }
+</style>
+<script>
+    
+    let canvas, ctx;
+    let angle = 0;
+    let running = false;
+    
+    function init() 
+    {
+        canvas = document.getElementById("scene");
+        ctx = canvas.getContext("2d");
+        document.getElementById("animateCheck").onchange = toggleAnimation;
+        draw();
+    }
+    
+    function toggleAnimation() 
+    {
+        running = document.getElementById("animateCheck").checked;
+        if (running) requestAnimationFrame(draw);
+    }
+    
+    function draw() 
+    {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (running) angle += 0.05;
+        
+        drawSeesaw(400, 400, 1.4, angle, "blue"); // Object 1 (largest)
+        drawSeesaw(200, 220, 1.1, angle, "purple"); // Object 2 (medium, higher than Object 1)
+        drawSeesaw(550, 180, 0.9, angle, "green"); // Object 3 (smallest and highest)
+        
+        if (running) requestAnimationFrame(draw);
+    }
+    
+    function drawSeesaw(x, y, scale, rotation, color) 
+    {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(scale, scale);
+        
+       
+        drawWheel(-72, -125, 33, rotation);
+        drawWheel(72, -75, 33, rotation);
+        
+    
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(-20, 0);
+        ctx.lineTo(20, 0);
+        ctx.lineTo(0, -100);
+        ctx.closePath();
+        ctx.fill();
+        
+
+        ctx.save();
+        ctx.rotate(Math.PI / 10);
+        ctx.fillStyle = "red";
+        ctx.fillRect(-110, -100, 160, 10);
+        ctx.restore();
+        
+        ctx.restore();
+    }
+    
+    function drawWheel(x, y, radius, rotation) 
+    {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+        ctx.stroke();
+        
+        for (let i = 0; i < 3; i++) 
+        {
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(radius * Math.cos((i * 2 * Math.PI) / 3), radius * Math.sin((i * 2 * Math.PI) / 3));
+            ctx.stroke();
+        }
+        
+        ctx.restore();
+    }
+</script>
+</head>
+<body onload="init()">
+    <h3>Animated Seesaws</h3>
+    <p><label><input type="checkbox" id="animateCheck"> Run the Animation</label></p>
+    <canvas id="scene" width="800" height="600"></canvas>
+</body>
+</html>
