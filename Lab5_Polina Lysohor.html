@@ -1,0 +1,85 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Animated Seesaws (SVG)</title>
+<style>
+    svg {
+        display: block;
+        margin: auto;
+        background: white;
+    }
+</style>
+<script>
+    let angle = 0;
+    let running = false;
+    
+    function toggleAnimation() {
+        running = document.getElementById("animateCheck").checked;
+        if (running) requestAnimationFrame(animate);
+    }
+    
+    function animate() {
+        if (!running) return;
+        angle += 5;
+        document.querySelectorAll(".wheel").forEach(el => {
+            el.setAttribute("transform", `rotate(${angle} ${el.dataset.cx} ${el.dataset.cy})`);
+        });
+        requestAnimationFrame(animate);
+    }
+</script>
+</head>
+<body>
+    <h3>Animated Seesaws (SVG)</h3>
+    <p><label><input type="checkbox" id="animateCheck" onchange="toggleAnimation()"> Run the Animation</label></p>
+    <svg id="scene" width="800" height="600">
+        <!-- Object 1 -->
+        <g transform="translate(400,400) scale(1.4)">
+            <g class="wheel" data-cx="-70" data-cy="-120">
+                <polygon points="-70,-150 -100,-100 -70,-120" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="-70,-150 -70,-120 -40,-100" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="-100,-100 -40,-100 -70,-120" fill="white" stroke="black" stroke-width="1"/>
+            </g>
+            <g class="wheel" data-cx="70" data-cy="-75">
+                <polygon points="70,-105 40,-55 70,-75" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="70,-105 70,-75 100,-55" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="40,-55 100,-55 70,-75" fill="white" stroke="black" stroke-width="1"/>
+            </g>
+            <polygon points="-20,0 20,0 0,-100" fill="blue"/>
+            <rect x="-110" y="-100" width="155" height="10" fill="red" transform="rotate(18)"/>
+        </g>
+        
+        <!-- Object 2 -->
+        <g transform="translate(200,220) scale(1.1)">
+            <g class="wheel" data-cx="-70" data-cy="-120">
+                <polygon points="-70,-150 -100,-100 -70,-120" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="-70,-150 -70,-120 -40,-100" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="-100,-100 -40,-100 -70,-120" fill="white" stroke="black" stroke-width="1"/>
+            </g>
+            <g class="wheel" data-cx="70" data-cy="-75">
+                <polygon points="70,-105 40,-55 70,-75" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="70,-105 70,-75 100,-55" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="40,-55 100,-55 70,-75" fill="white" stroke="black" stroke-width="1"/>
+            </g>
+            <polygon points="-20,0 20,0 0,-100" fill="purple"/>
+            <rect x="-110" y="-100" width="155" height="10" fill="red" transform="rotate(18)"/>
+        </g>
+        
+        <!-- Object 3 -->
+        <g transform="translate(550,180) scale(0.9)">
+            <g class="wheel" data-cx="-70" data-cy="-120">
+                <polygon points="-70,-150 -100,-100 -70,-120" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="-70,-150 -70,-120 -40,-100" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="-100,-100 -40,-100 -70,-120" fill="white" stroke="black" stroke-width="1"/>
+            </g>
+            <g class="wheel" data-cx="70" data-cy="-75">
+                <polygon points="70,-105 40,-55 70,-75" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="70,-105 70,-75 100,-55" fill="white" stroke="black" stroke-width="1"/>
+                <polygon points="40,-55 100,-55 70,-75" fill="white" stroke="black" stroke-width="1"/>
+            </g>
+            <polygon points="-20,0 20,0 0,-100" fill="green"/>
+            <rect x="-110" y="-100" width="155" height="10" fill="red" transform="rotate(18)"/>
+        </g>
+    </svg>
+</body>
+</html>
