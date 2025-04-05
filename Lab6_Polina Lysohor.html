@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OpenGL Object Rotation</title>
+    <script src="glsim.js"></script>  <!-- Load OpenGL 1.1 simulation code -->
+
+    <script>
+        let rotateX = 15;  // Rotation values for objects
+        let rotateY = -15;
+        let rotateZ = 0;
+        let objectNumber = 1; // Default object is corkscrew (1)
+
+        function display_pyramid() {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            glTranslatef(0.0, 0.0, -6.0);  // Move the object back
+            glRotatef(rotateZ, 0, 0, 1);
+            glRotatef(rotateY, 0, 1, 0);
+            glRotatef(rotateX, 1, 0, 0);
+
+            // Drawing pyramid
+            glBegin(GL_TRIANGLES);
+            
+            // Front face
+            glColor3f(0.2, 0.9, 0.6);
+            glVertex3f(0.0, 1.0, 0.0);
+            glVertex3f(-1.0, -1.0, 1.0);
+            glVertex3f(1.0, -1.0, 1.0);
+
+            // Back face
+            glColor3f(0.7, 1.0, 0.9);
+            glVertex3f(0.0, 1.0, 0.0);
+            glVertex3f(-1.0, -1.0, -1.0);
+            glVertex3f(1.0, -1.0, -1.0);
+
+            // Left face
+            glColor3f(0.4, 1.0, 0.3);
+            glVertex3f(0.0, 1.0, 0.0);
+            glVertex3f(-1.0, -1.0, -1.0);
+            glVertex3f(-1.0, -1.0, 1.0);
+
+            // Right face
+            glColor3f(1.0, 0.9, 0.3);
+            glVertex3f(0.0, 1.0, 0.0);
+            glVertex3f(1.0, -1.0, -1.0);
+            glVertex3f(1.0, -1.0, 1.0);
+
+            glEnd();
+        }
+
+        function display_corkscrew() {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            glTranslatef(0.0, 0.0, -6.0);  // Move the object back
+            glRotatef(rotateZ, 0, 0, 1);
+            glRotatef(rotateY, 0, 1, 0);
+            glRotatef(rotateX, 1, 0, 0);
+
+            glPushMatrix();
+            glColor3f(0.5, 0.5, 0.5);  // Corkscrew color
+            glBegin(GL_LINE_STRIP);
+            for (let i = 0; i < 360 * 3; i++) {
+                let angle = i * Math.PI / 180;
+                let x = Math.cos(angle) * 0.5;
+                let y = Math.sin(angle) * 0.5;
+                let z = i * 0.01;
+                glVertex3f(x, y, z);
+            }
+            glEnd();
+            glPopMatrix();
+        }
+
+        function display() {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glLoadIdentity();
+            if (objectNumber === 1) {
+                display_corkscrew();
+            } else if (objectNumber === 2) {
+                display_pyramid();
+            }
+            glutSwapBuffers();
+        }
+
+        function doKeyDown(evt) {
+            let key = evt.keyCode;
+            if (key === 37) {  // left arrow
+                rotateY -= 15;
+            } else if (key === 39) {  // right arrow
+                rotateY += 15;
+            } else if (key === 40) {  // down arrow
+                rotateX += 15;
+            } else if (key === 38) {  // up arrow
+                rotateX -= 15;
+            } else if (key === 33) {  // page up
+                rotateZ += 15;
+            } else if (key === 34) {  // page down
+                rotateZ -= 15;
+            } else if (key === 36) {  // home
+                rotateX = rotateY = rotateZ = 0;
+            } else if (key === 49) {  // key '1' for corkscrew
+                objectNumber = 1;
+            } else if (key === 50) {  // key '2' for pyramid
+                objectNumber = 2;
+            }
+            if (key >= 34 && key <= 40) {
+                evt.preventDefault();
+            }
+            display();
+        }
+
+        function initGL() {
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            gluPerspective(45.0, 1.0, 0.1, 100.0);  // Use perspective projection
+            glMatrixMode(GL_MODELVIEW);
+            glEnable(GL_DEPTH_TEST);
+            glClearColor(0, 0, 0, 1);  // Set background color to black
+        }
+
+        function init() {
+            try {
+                glsimUse("glcanvas");
+            } catch (e) {
+                document.getElementById("canvas-holder").innerHTML =
+                    "Sorry, an error occurred:<br>" + e;
+                return;
+            }
+            document.onkeydown = doKeyDown;
+            initGL();
+            display();
+        }
+    </script>
+</head>
+
+<body onload="init()">
+
+    <h3>OpenGL: Rotate Pyramid and Corkscrew</h3>
+
+    <p>(Use the number keys 1 or 2 to select an object, and use arrow keys and page up/page down to rotate.)</p>
+
+    <noscript>
+        <p><b>Sorry, this page requires JavaScript!</b></p>
+    </noscript>
+
+    <div id="canvas-holder">
+        <canvas id="glcanvas" width="500" height="500"></canvas>
+    </div>
+
+</body>
+
+</html>
